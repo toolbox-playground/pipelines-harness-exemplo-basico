@@ -1,0 +1,48 @@
+version: '1.0'
+
+name: Publish Docker image version
+
+workflows:
+  - name: Build and Test
+    trigger:
+      events:
+        - push
+    pipeline:
+      - name: Build Node.js
+        steps:
+          - type: gitClone
+            configuration:
+              repoURL: ${{ secrets.GITHUB_SERVER_URL }}/${{ github.repository }}
+              branch: ${{ github.ref }}
+          - type: shellScript
+            configuration:
+              command: cd app && npm install
+      - name: Test Node.js
+        dependsOn: [Build Node.js]
+        steps:
+          - type: shellScript
+            configuration:
+              command: cd app && npm test
+      - name: Push Docker image to Docker Hub
+        dependsOn: [Test Node.js]
+        steps:
+          - type: gitClone
+            configuration:
+              repoURL: ${{ secrets.GITHUB_SERVER_URL }}/${{ github.repository }}
+              branch: ${{ github.ref }}
+          - type: dockerLogin
+            configuration:
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_PASSWORD }}
+          - type: dockerBuild
+            configuration:
+              dockerfilePath: ./Dockerfile
+              context: .
+              tags:
+                - ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_REPOSITORY }}:main
+                - ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_REPOSITORY }}:${{ github.run_number }}
+          - type: dockerPush
+            configuration:
+              tags:
+                - ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_REPOSITORY }}:main
+                - ${{ secrets.DOCKER_NAMESPACE }}/${{ secrets.DOCKER_REPOSITORY }}:${{ github.run_number }}
