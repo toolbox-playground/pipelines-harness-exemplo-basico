@@ -53,6 +53,6 @@ pipeline:
                   identifier: Push_Docker_Image
                   spec:
                     connectorRef: Docker_Toolbox
-                    repo: marcelobuzzettitoolbox/pipelines-exemplo-basico-desafio
+                    repo: toolboxplayground/pipelines-exemplo-basico-desafio
                     tags:
                       - latest
