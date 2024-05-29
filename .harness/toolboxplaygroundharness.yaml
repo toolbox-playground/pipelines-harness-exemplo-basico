@@ -1,0 +1,37 @@
+pipeline:
+  name: toolbox-playground-harness
+  identifier: toolboxplaygroundharness
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Toolbox_Playground
+        repoName: harness
+        build: <+input>
+  stages:
+    - stage:
+        name: NodeJS
+        identifier: NodeJS
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: BuildAndPushDockerRegistry_1
+                  identifier: BuildAndPushDockerRegistry_1
+                  spec:
+                    connectorRef: account.harnessImage
+                    repo: toolboxplayground/pipelines-exemplo-basico-desafio
+                    tags:
+                      - latest
