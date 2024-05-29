@@ -48,22 +48,11 @@ pipeline:
                       npm test
                   description: Test nodejs app
               - step:
-                  name: Build Docker Image
-                  identifier: Build_Docker_Image
-                  type: Run
+                  type: BuildAndPushDockerRegistry
+                  name: Build and Push Docker Image
+                  identifier: Build_and_Push_Docker_Image
                   spec:
-                    command: |
-                      docker build -t toolboxplayground/pipelines-exemplo-basico-desafio:latest .
-              - step:
-                  name: Push Docker Image
-                  identifier: Push_Docker_Image
-                  type: Run
-                  spec:
-                    command: |
-                      echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                      docker push toolboxplayground/pipelines-exemplo-basico-desafio:latest
-                  envVariables:
-                    - name: DOCKER_USERNAME
-                      value: <+secrets.getValue("docker_username_marcelobuzzetti")>
-                    - name: DOCKER_PASSWORD
-                      value: <+secrets.getValue("docker_password_marcelobuzzetti")>
+                    connectorRef: Docker_Toolbox
+                    repo: marcelobuzzettitoolbox/pipelines-exemplo-basico-desafio
+                    tags:
+                      - latest
