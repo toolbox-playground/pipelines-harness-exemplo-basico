@@ -48,13 +48,13 @@ pipeline:
                       npm test
                   description: Test nodejs app
               - step:
-                  name: Build
+                  name: Build Docker Image
                   type: Run
                   spec:
                     command: |
                       docker build -t toolboxplayground/pipelines-exemplo-basico-desafio:latest .
               - step:
-                  name: Push
+                  name: Push Docker Image
                   type: Run
                   spec:
                     command: |
