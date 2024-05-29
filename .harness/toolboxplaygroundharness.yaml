@@ -49,12 +49,14 @@ pipeline:
                   description: Test nodejs app
               - step:
                   name: Build Docker Image
+                  identifier: Build_Docker_Image
                   type: Run
                   spec:
                     command: |
                       docker build -t toolboxplayground/pipelines-exemplo-basico-desafio:latest .
               - step:
                   name: Push Docker Image
+                  identifier: Push_Docker_Image
                   type: Run
                   spec:
                     command: |
