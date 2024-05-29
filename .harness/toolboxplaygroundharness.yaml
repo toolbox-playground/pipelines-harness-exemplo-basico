@@ -27,11 +27,32 @@ pipeline:
           execution:
             steps:
               - step:
-                  type: BuildAndPushDockerRegistry
-                  name: BuildAndPushDockerRegistry_1
-                  identifier: BuildAndPushDockerRegistry_1
+                  type: Run
+                  name: Build
+                  identifier: Build
                   spec:
-                    connectorRef: account.harnessImage
+                    shell: Sh
+                    command: |-
+                      cd app
+                      npm install
+                  description: instal npm packages
+              - step:
+                  type: Run
+                  name: Test
+                  identifier: Test
+                  spec:
+                    shell: Sh
+                    command: |-
+                      cd app
+                      npm install
+                      npm test
+                  description: Test nodejs app
+              - step:
+                  type: BuildAndPushDockerRegistry
+                  name: Push Docker Image
+                  identifier: Push_Docker_Image
+                  spec:
+                    connectorRef: Docker_Toolbox
                     repo: toolboxplayground/pipelines-exemplo-basico-desafio
                     tags:
                       - latest
