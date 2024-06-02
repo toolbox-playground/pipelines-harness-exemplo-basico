@@ -57,5 +57,5 @@ pipeline:
                     tags:
                       - latest
           caching:
-            enabled: false
+            enabled: true
             paths: []
