@@ -1,0 +1,14 @@
+inputSet:
+  name: "Toolbox Playground "
+  identifier: Toolbox_Playground
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: toolboxplaygroundharness
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: <+trigger.branch>
