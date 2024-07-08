@@ -55,7 +55,7 @@ pipeline:
                   identifier: Build_and_Push_Docker_Image
                   spec:
                     connectorRef: Docker_Toolbox
-                    repo: toolboxplayground/pipelines-exemplo-basico-desafio
+                    repo: toolboxplayground/pipelines-harness-exemplo-basico
                     tags:
                       - latest
           caching:

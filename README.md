@@ -8,8 +8,7 @@
 
 2. Certifique-se de ter o Git instalado em sua máquina. Você pode baixar e instalar o Git a partir do site oficial: [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
-3. Crie uma conta no Docker Hub, [https://hub.docker.com/signup/](https://hub.docker.com/signup/), e crie um repositório.
-
+3. Crie uma conta no Docker Hub, [https://hub.docker.com/signup/](https://hub.docker.com/signup/), e crie um repositório chamado **pipelines-harness-exemplo-basico**.
 
 4. Faça um fork do repositório [https://github.com/toolbox-playground/pipelines-harness-exemplo-basico](https://github.com/toolbox-playground/pipelines-harness-exemplo-basico). Siga os passos abaixo para fazer um fork:
 
@@ -27,6 +26,8 @@ git clone https://github.com/seu-usuario/pipelines-harness-exemplo-basico
 Lembre-se de substituir `seu-usuario` pelo seu usuário do GitHub.
 
 6. Acesse o diretório que você acabou de clonar: `pipelines-harness-exemplo-basico`.
+
+7. Acesse o arquivo [toolboxplaygroundharness.yaml](./.harness/pipelines/toolboxplaygroundharness.yaml) e altere o trecho `repo: toolboxplayground/pipelines-harness-exemplo-basico` substituindo **toolboxplayground** pelo seu namespace do DockerHub, que deve ser o seu usuário.
 
 Crie uma conta no Harness em [https://app.harness.io/auth/#/signup?utm_source=harness_io&utm_medium=cta&utm_campaign=platform&utm_content=main_nav](https://app.harness.io/auth/#/signup?utm_source=harness_io&utm_medium=cta&utm_campaign=platform&utm_content=main_nav)
 
@@ -78,17 +79,20 @@ Em **Provider Type** selecione **DockerHub**
 Em **Docker Registry URL** preencar com https://index.docker.io/v2/
 
 Em **Authentication**, coloque o seu **username** do Docker Hub. 
-Antes de cadastrar o **Password**, vamos criar o token no Docker Hub GitHub usado o seguinte link: [https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook](https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook) 
+Antes de cadastrar o **Password**, vamos criar o token no Docker Hub. Para criar o token acesse [https://hub.docker.com/settings/security](https://hub.docker.com/settings/security) e clique em **New Access Token**.
+Preencha o **Access Token Description** com **Harness Token** e clique em **generate**.
+Copie o token gerado e coloque em `Password`
 
-Na página do github qe irá aprecer em note digite **Harness** e depois clique em **Generate token**, copie o token para usá-lo como secret
+Na página do github qe irá aprecer em note digite **Harness** e depois clique em **Generate token**, copie o token para usá-lo como secret.
 
-De volta a página do Harness, clique  em **Create or Select a Secret**, no modal que irá aparecer clique em **New Secret Text**. Em **Secret Name**  digite **GitHub PAT** e em **Secret Value** cole o token gerado no Github e clique em **Save**
+De volta a página do Harness, clique  em **Create or Select a Secret**, no modal que irá aparecer clique em **New Secret Text**. Em **Secret Name**  digite **Docker Token** e em **Secret Value** cole o token gerado no Docker Hub e clique em **Save**.
 
-Marque o **Enable API access (recommended)** e em **API Authentication**  clique  em **Create or Select a Secret** e selecione o **GitHub PAT** e depois clique em Continue. 
+Clique em Continue. 
 
 Em **Connect to the provider** selecione **Connect through Harness Platform** e clique em **Save and Continue**.
 
 Aguarde a **Connection Test** terminar e aparecer **Verification successful** e clique em **Finish**.
+
 
 
 Será necessário cadastrar um cartão de crédito para rodar as pipeline na Harness Cloud, caso não tenha, você irá rodar localmente usando o delegates. Este exemplo fará uso da Harness Cloud.
