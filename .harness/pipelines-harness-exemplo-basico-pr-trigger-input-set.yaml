@@ -1,6 +1,6 @@
 inputSet:
-  name: pipelines-harness-exemplo-basico-input-set-2
-  identifier: pipelinesharnessexemplobasicoinputset2
+  name: pipelines-harness-exemplo-basico-pr-trigger-input-set
+  identifier: pipelinesharnessexemplobasicoprtriggerinputset
   orgIdentifier: default
   projectIdentifier: default_project
   pipeline:
@@ -9,6 +9,6 @@ inputSet:
       ci:
         codebase:
           build:
-            type: branch
+            type: PR
             spec:
-              branch: main
+              number: <+trigger.prNumber>
