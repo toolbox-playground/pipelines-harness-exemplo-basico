@@ -1,4 +1,4 @@
-# Fluxo de Trabalho do Harness CI/CD
+# Fluxo de Trabalho do Harness
 
 ![Toolbox Playground](img/toolbox-playground.png)
 
