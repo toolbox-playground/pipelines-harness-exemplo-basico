@@ -1,10 +1,10 @@
 inputSet:
-  name: "Toolbox Playground "
-  identifier: Toolbox_Playground
+  name: pipelines-harness-exemplo-basico-input-set
+  identifier: pipelinesharnessexemplobasicoinputset
   orgIdentifier: default
   projectIdentifier: default_project
   pipeline:
-    identifier: toolboxplaygroundharness
+    identifier: pipelinesharnessexemplobasico
     properties:
       ci:
         codebase:
