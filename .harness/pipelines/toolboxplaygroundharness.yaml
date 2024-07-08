@@ -1,6 +1,6 @@
 pipeline:
-  name: toolbox-playground-harness
-  identifier: toolboxplaygroundharness
+  name: pipelines-harness-exemplo-basico
+  identifier: pipelines-harness-exemplo-basico
   projectIdentifier: default_project
   orgIdentifier: default
   tags: {}
