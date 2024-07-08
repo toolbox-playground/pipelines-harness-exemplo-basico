@@ -1,4 +1,4 @@
-# Fluxo de Trabalho do GitHub Actions
+# Fluxo de Trabalho do Harness
 
 ![Toolbox Playground](img/toolbox-playground.png)
 
