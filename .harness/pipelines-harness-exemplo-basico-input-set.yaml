@@ -1,0 +1,14 @@
+inputSet:
+  name: pipelines-harness-exemplo-basico-input-set-2
+  identifier: pipelinesharnessexemplobasicoinputset2
+  orgIdentifier: default
+  projectIdentifier: default_project
+  pipeline:
+    identifier: pipelinesharnessexemplobasico
+    properties:
+      ci:
+        codebase:
+          build:
+            type: branch
+            spec:
+              branch: main
