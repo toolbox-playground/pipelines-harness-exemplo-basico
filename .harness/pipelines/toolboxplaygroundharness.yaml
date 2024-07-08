@@ -46,6 +46,7 @@ pipeline:
                       cd app
                       npm install
                       npm test
+                      echo "test completed successfully"
                   description: Test nodejs app
               - step:
                   type: BuildAndPushDockerRegistry
