@@ -43,6 +43,7 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      echo "Running tests"
                       cd app
                       npm install
                       npm test
