@@ -16,7 +16,7 @@ a. Acesse o repositório [https://github.com/toolbox-playground/pipelines-harnes
 
 b. No canto superior direito da página, clique no botão "Fork".
 
-c. Na janela que ira aparecer, acrescente **-fork** no final de **pipelines-harness-exemplo-basico**, ficando o repo com o seguinte nome **pipelines-harness-exemplo-basico-fork**
+c. Na janela que ira aparecer, acrescente **-fork** no final de **pipelines-harness-exemplo-basico**, ficando o repo com o seguinte nome **pipelines-harness-exemplo-basico-fork**, muito importante colocar esse nome pois o arquivo da pipeline, [toolboxplaygroundharness.yaml](./.harness/pipelines/toolboxplaygroundharness.yaml), esta setado para esse nome. Verifique no arquivo o trecho `repoName: pipelines-harness-exemplo-basico-fork`.
 
 c. Isso criará uma cópia do repositório em sua conta do GitHub.
 
@@ -37,6 +37,10 @@ Crie uma conta no Harness em [https://app.harness.io/auth/#/signup?utm_source=ha
 
 Clique em **Continuos Integration**
 
+No canto superior esquerdo existe uma caixa de seleção, clique nela e escolha **Accounts** e clique na sua conta, depois vá em **Account Settings**, depois clique em **Default Settings** e em **Git Experience**, marque **Enable Bi-Directional Sync**.
+
+Clique em **Projects** e depois clique em **Default Project**.
+
 Vá até o **Project Settings** e clique em **Connectors**
 
 Iremos criar dois conectores, um para o GitHub, usando o [**PAT**](https://docs.github.com/pt/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) (personal access token), para acessarmos o repositório que queremos rodar a pipeline e para criar um webhook que irá informar o harness sobre qualquer alteração por PUSH ou PULL REQUEST.
@@ -47,7 +51,7 @@ Clique em **New Connector**
 
 Digite GitHub em Search e selecione o GItHUb
 
-Em name coloque **Toolbox GitHub**
+Em name coloque `Toolbox_GitHub`
 
 Em **GitHub Account URL** coloque a URL da sua conta no GitHub, **https://github.com/seu-suario**, substituindo o `seu-usuario` por seu usuário no GitHub.
 
@@ -56,9 +60,9 @@ Em **Test Repository** coloque respositorio que fizemos o fork `pipelines-harnes
 Clique em continue.
 
 Em **Authentication**, coloque o seu **username** do GitHUb 
-Antes de cadastrar o **Personal Access Token**, vamos criar o PAT no GitHub usado o seguinte link: [https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook](https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook) 
+Antes de cadastrar o **Personal Access Token**, vamos criar o PAT no GitHub usado o seguinte link: [https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook](https://github.com/settings/tokens/new?scopes=repo,user,admin:org_hook,admin:repo_hook). Devem estar marcadas as opções repo, user, admin:org_hook e admin:repo_hook.
 
-Na página do github qe irá aprecer em note digite **Harness** e depois clique em **Generate token**, copie o token para usá-lo como secret
+Na página do github qe irá aprecer, em **note** digite `Harness` e depois clique em **Generate token**, copie o token para usá-lo como secret
 
 De volta a página do Harness, clique  em **Create or Select a Secret**, no modal que irá aparecer clique em **New Secret Text**. Em **Secret Name**  digite **GitHub PAT** e em **Secret Value** cole o token gerado no Github e clique em **Save**
 
@@ -70,26 +74,23 @@ Aguarde a **Connection Test** terminar e aparecer **Verification successful** e 
 
 Agora vamos criar um Conector para o Docker Hub.
 
-
-
 Clique novamente em **New Conector**
 
 Digite Docker em Search e selecione o Docker Registry
 
-Em name coloque **Docker_Toolbox**
+Em name coloque `Docker_Toolbox`
 
 Em **Provider Type** selecione **DockerHub**
 
-Em **Docker Registry URL** preencar com https://index.docker.io/v2/
+Em **Docker Registry URL** preencar com `https://index.docker.io/v2/`
 
 Em **Authentication**, coloque o seu **username** do Docker Hub. 
 Antes de cadastrar o **Password**, vamos criar o token no Docker Hub. Para criar o token acesse [https://hub.docker.com/settings/security](https://hub.docker.com/settings/security) e clique em **New Access Token**.
-Preencha o **Access Token Description** com **Harness Token** e clique em **generate**.
-Copie o token gerado e coloque em `Password`
+Preencha o **Access Token Description** com `Harness Token` e clique em **generate**.
 
-Na página do github qe irá aprecer em note digite **Harness** e depois clique em **Generate token**, copie o token para usá-lo como secret.
+Copie o token gerado.
 
-De volta a página do Harness, clique  em **Create or Select a Secret**, no modal que irá aparecer clique em **New Secret Text**. Em **Secret Name**  digite **Docker Token** e em **Secret Value** cole o token gerado no Docker Hub e clique em **Save**.
+De volta a página do Harness, clique  em **Create or Select a Secret**, no modal que irá aparecer clique em **New Secret Text**. Em **Secret Name**  digite `Docker Token` e em **Secret Value** cole o token gerado no Docker Hub e clique em **Save**.
 
 Clique em Continue. 
 
@@ -99,23 +100,25 @@ Aguarde a **Connection Test** terminar e aparecer **Verification successful** e 
 
 Clique em **Pipelines** e depois clique na **seta para baixo** no **+ Create a Pipeline** e clique em **Import from Git** 
 
-Clique em **Third-party Git provider**, depois selecione o **Git Connector** **Toolbox GitHub**, em **Repository** selecione o repositório que você fez o fork, **pipelines-harness-exemplo-basico-fork**
+Clique em **Third-party Git provider**, depois selecione o **Git Connector** **Toolbox_GitHub**, em **Repository** selecione o repositório que você fez o fork, `pipelines-harness-exemplo-basico-fork`.
 
 Em **Git Branch** escolha **main** e em YAML path coloque `.harness/pipelines/toolboxplaygroundharness.yaml` e clique em **Import**
 
 Clique me **pipelines-harness-exemplo-basico**, você verá visualmente a pipeline no **Pipeline Studio**.
- e depois cliquem **NodeJS**, e em **Infrastructure**, clique em Update Card e coloque um cartão de crédito se quiser rodar a pipeline na **Harness Cloud**, para o que vamos fazer, não será feita nenhuma cobraça pois estamos no plano free e temos direito a 100 builds por mês, para saber mais acesse [https://www.harness.io/pricing](https://www.harness.io/pricing).
+
+Clique **NodeJS**, e em **Infrastructure**, clique em Update Card e coloque um cartão de crédito para rodar a pipeline na **Harness Cloud**, que é o que este exemplo irá fazer. Não será feita nenhuma cobraça pois estamos no plano free e temos direito a 100 builds por mês, para saber mais acesse [https://www.harness.io/pricing](https://www.harness.io/pricing).
+
 Depois selecione **Cloud** e clique em **Continue**
 
-Caso não tenha o cartão ou não queira rodar na **Harness Cloud**, existem as opções de rodar em um **Kubernets** e **Local**. Neste exemplo iremos rodar na **Harness Cloud**, caso deseje rodar localmente, siga o passo-a-passo para configurar, conforme o link [https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/](https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/)
+"Caso não queira usar o cartão de crédito ou não queira rodar na **Harness Cloud**, existem as opções de rodar em um **Kubernets** e **Local**. Em **Local** siga o passo-a-passo para configurar conforme o link [https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/](https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/). Se optar por local, deverão ser alterados os conectores também, de **Connect through a Harness Platform** para **Connect through a Harness Delegate**"
 
-vamos agira adicionar os **Input Sets**, serão dois, um para **Pull Request** e outro para **Push**.
+Vamos agora adicionar os **Input Sets**, serão dois, um para **Pull Request** e outro para **Push**.
 
 Clique em **Input Sets**, em **New Input Set**, clique na **seta para baixo** e selecione **Import From Git**.
 
 Em **Name** coloque `pipelines-harness-exemplo-basico-pr-trigger-input-set` e em **YAML Path** coloque `.harness/pipelines-harness-exemplo-basico-pr-trigger-input-set.yaml` e clique em **Import**. Acabamos de importar o input set para **Pull Request**.
 
-Em **New Input Set**, clique na **seta para baixo** e selecione **Import From Git** novamente.
+Novamente em **New Input Set**, clique na **seta para baixo** e selecione **Import From Git** novamente.
 
 Em **Name** coloque `pipelines-harness-exemplo-basico-push-trigger-input-set` e em **YAML Path** coloque `.harness/pipelines-harness-exemplo-basico-push-trigger-input-set.yaml` e clique em **Import**. Acabamos de importar o input set para **Push**.
 
@@ -125,16 +128,9 @@ Clique em **Triggers** e depois em **New Trigger**, selecione o **GitHub** em **
 
 Clique novamente em **New Trigger**, selecione o **GitHub** em **Webhook**, em **Name** digite `Push Trigger`, em **Connector** selecione o **Toolbox GitHub**. Em **Repository Name** coloque `pipelines-harness-exemplo-basico-fork`. Em **Event**, selecione **Push** e clique em **Continue**. A próxima tela é para configurar as condições de execução, iremos deixar em branco e clicar em **Continue** novamente. Em **Pipeline Input** colocaremos o **Input Set** para **Push** clicando em **+ Select Input Set**, selecionado o **pipelines-harness-exemplo-basico-push-trigger-input-set**. Agora clique em **Create Trigger**.
 
-Pronto está tudo configurado para a pipeline ser disparada com um Push ou Pull Request para o seu repo, para testar, faça uma alteração no [README.md](README.md), colocando seu nome no final e fazendo um Commit.
+Pronto está tudo configurado para a pipeline ser disparada com um **Push** ou **Pull Request** para o seu repo. 
 
+Para testar, faça uma alteração no [README.md](README.md), colocando seu nome no final e faça um Commit e um Push.
 
-
-
-Será necessário cadastrar um cartão de crédito para rodar as pipeline na Harness Cloud, caso não tenha, você irá rodar localmente usando o delegates. Este exemplo fará uso da Harness Cloud.
-
-
-
-Habilite o `Enable Bi-Directional Sync` em `Account Settings`
-
-Vá em `pipelines`
+Feito isso clique em **Pipelines** e veja a pipeline rodar.
 
