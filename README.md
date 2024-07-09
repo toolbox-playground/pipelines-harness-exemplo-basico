@@ -12,22 +12,26 @@
 
 4. Faça um fork do repositório [https://github.com/toolbox-playground/pipelines-harness-exemplo-basico](https://github.com/toolbox-playground/pipelines-harness-exemplo-basico). Siga os passos abaixo para fazer um fork:
 
-a. Acesse o repositório [https://github.com/toolbox-playground/pipelines-jenkins-exemplo-basico](https://github.com/toolbox-playground/pipelines-jenkins-exemplo-basico).
+a. Acesse o repositório [https://github.com/toolbox-playground/pipelines-harness-exemplo-basico](https://github.com/toolbox-playground/pipelines-harness-exemplo-basico).
 
 b. No canto superior direito da página, clique no botão "Fork".
+
+c. Na janela que ira aparecer, acrescente **-fork** no final de **pipelines-harness-exemplo-basico**, ficando o repo com o seguinte nome **pipelines-harness-exemplo-basico-fork**
 
 c. Isso criará uma cópia do repositório em sua conta do GitHub.
 
 5. Depois de ter feito o fork, você pode clonar o repositório para a sua máquina local com o seguinte comando:
 
 ```bash
-git clone https://github.com/seu-usuario/pipelines-harness-exemplo-basico
+git clone https://github.com/seu-usuario/pipelines-harness-exemplo-basico-fork
 ```
 Lembre-se de substituir `seu-usuario` pelo seu usuário do GitHub.
 
-6. Acesse o diretório que você acabou de clonar: `pipelines-harness-exemplo-basico`.
+6. Acesse o diretório que você acabou de clonar: `pipelines-harness-exemplo-basico-fork`.
 
 7. Acesse o arquivo [toolboxplaygroundharness.yaml](./.harness/pipelines/toolboxplaygroundharness.yaml) e altere o trecho `repo: toolboxplayground/pipelines-harness-exemplo-basico` substituindo **toolboxplayground** pelo seu namespace do DockerHub, que deve ser o seu usuário.
+
+Faca o commit e o Push
 
 Crie uma conta no Harness em [https://app.harness.io/auth/#/signup?utm_source=harness_io&utm_medium=cta&utm_campaign=platform&utm_content=main_nav](https://app.harness.io/auth/#/signup?utm_source=harness_io&utm_medium=cta&utm_campaign=platform&utm_content=main_nav)
 
@@ -92,6 +96,37 @@ Clique em Continue.
 Em **Connect to the provider** selecione **Connect through Harness Platform** e clique em **Save and Continue**.
 
 Aguarde a **Connection Test** terminar e aparecer **Verification successful** e clique em **Finish**.
+
+Clique em **Pipelines** e depois clique na **seta para baixo** no **+ Create a Pipeline** e clique em **Import from Git** 
+
+Clique em **Third-party Git provider**, depois selecione o **Git Connector** **Toolbox GitHub**, em **Repository** selecione o repositório que você fez o fork, **pipelines-harness-exemplo-basico-fork**
+
+Em **Git Branch** escolha **main** e em YAML path coloque `.harness/pipelines/toolboxplaygroundharness.yaml` e clique em **Import**
+
+Clique me **pipelines-harness-exemplo-basico**, você verá visualmente a pipeline no **Pipeline Studio**.
+ e depois cliquem **NodeJS**, e em **Infrastructure**, clique em Update Card e coloque um cartão de crédito se quiser rodar a pipeline na **Harness Cloud**, para o que vamos fazer, não será feita nenhuma cobraça pois estamos no plano free e temos direito a 100 builds por mês, para saber mais acesse [https://www.harness.io/pricing](https://www.harness.io/pricing).
+Depois selecione **Cloud** e clique em **Continue**
+
+Caso não tenha o cartão ou não queira rodar na **Harness Cloud**, existem as opções de rodar em um **Kubernets** e **Local**. Neste exemplo iremos rodar na **Harness Cloud**, caso deseje rodar localmente, siga o passo-a-passo para configurar, conforme o link [https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/](https://developer.harness.io/docs/continuous-integration/use-ci/set-up-build-infrastructure/define-a-docker-build-infrastructure/)
+
+vamos agira adicionar os **Input Sets**, serão dois, um para **Pull Request** e outro para **Push**.
+
+Clique em **Input Sets**, em **New Input Set**, clique na **seta para baixo** e selecione **Import From Git**.
+
+Em **Name** coloque `pipelines-harness-exemplo-basico-pr-trigger-input-set` e em **YAML Path** coloque `.harness/pipelines-harness-exemplo-basico-pr-trigger-input-set.yaml` e clique em **Import**. Acabamos de importar o input set para **Pull Request**.
+
+Em **New Input Set**, clique na **seta para baixo** e selecione **Import From Git** novamente.
+
+Em **Name** coloque `pipelines-harness-exemplo-basico-push-trigger-input-set` e em **YAML Path** coloque `.harness/pipelines-harness-exemplo-basico-push-trigger-input-set.yaml` e clique em **Import**. Acabamos de importar o input set para **Push**.
+
+Agora vamos configurar os **Triggers** para que a pipeline seja executada quando houver um **Push** ou um **Pull Request**.
+
+Clique em **Triggers** e depois em **New Trigger**, selecione o **GitHub** em **Webhook**, em **Name** digite `PR Trigger`, em **Connector** selecione o **Toolbox GitHub**. Em **Repository Name** coloque `pipelines-harness-exemplo-basico-fork`. Em **Event**, selecione **Pull Request** e clique em **Continue**. A próxima tela é para configurar as condições de execução, iremos deixar em branco e clicar em **Continue** novamente. Em **Pipeline Input** colocaremos o **Input Set** para **Pull Request** clicando em **+ Select Input Set**, selecionado o **pipelines-harness-exemplo-basico-pr-trigger-input-set**. Agora clique em **Create Trigger**.
+
+Clique novamente em **New Trigger**, selecione o **GitHub** em **Webhook**, em **Name** digite `Push Trigger`, em **Connector** selecione o **Toolbox GitHub**. Em **Repository Name** coloque `pipelines-harness-exemplo-basico-fork`. Em **Event**, selecione **Push** e clique em **Continue**. A próxima tela é para configurar as condições de execução, iremos deixar em branco e clicar em **Continue** novamente. Em **Pipeline Input** colocaremos o **Input Set** para **Push** clicando em **+ Select Input Set**, selecionado o **pipelines-harness-exemplo-basico-push-trigger-input-set**. Agora clique em **Create Trigger**.
+
+Pronto está tudo configurado para a pipeline ser disparada com um Push ou Pull Request para o seu repo, para testar, faça uma alteração no [README.md](README.md), colocando seu nome no final e fazendo um Commit.
+
 
 
 
