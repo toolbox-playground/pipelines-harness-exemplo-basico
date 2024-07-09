@@ -8,7 +8,7 @@ pipeline:
     ci:
       codebase:
         connectorRef: Toolbox_GitHub
-        repoName: harness
+        repoName: pipelines-harness-exemplo-basico-fork
         build: <+input>
   stages:
     - stage:
