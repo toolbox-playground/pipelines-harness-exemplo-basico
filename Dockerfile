@@ -14,7 +14,7 @@ COPY /app .
 RUN npm install
 
 # Exponha a porta 8080
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["npm", "start"]
 # Define o comando padrão a ser executado quando o container é iniciado. Neste caso, ele executa o comando "node app/server.js", que inicia o servidor Node.js.
