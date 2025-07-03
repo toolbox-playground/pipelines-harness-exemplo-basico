@@ -32,12 +32,9 @@ jobs:
                 git config --global user.email "pipelines@toolboxdevops.cloud"
                 git config --global user.name "Toolbox Automation"
 
-          - name: Run Semantic Release 
-            run: |
-          # O semantic-release vai analisar os commits e determinar se deve criar uma nova versão.
-          # Não é necessário usar 'if/elif/else' ou `--release-as` aqui.
-          echo "::notice::Executando semantic-release para determinar a versão..."
-          npm run release # <<< CHAME APENAS ISSO!
+            - name: Run Semantic Release 
+              run: |
+      
         env:
           # O semantic-release precisa deste token para interagir com o GitHub
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
