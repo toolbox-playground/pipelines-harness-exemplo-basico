@@ -4,8 +4,7 @@
   "description": "pipelines-harness-exemplo-basico",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "release": "semantic-release" 
+    "test": "echo \"Error: no test specified\" && exit 1",    
   },
   "keywords": [],
   "author": "",
