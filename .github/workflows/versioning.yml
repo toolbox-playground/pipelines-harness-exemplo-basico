@@ -12,6 +12,8 @@ on:
       inputs: # Define os inputs do fluxo de trabalho
         name: # Define o input "name"
           description: 'Trigger manual do Workflow' # Descrição do input
+          required: false # Adicionado para que o input 'name' seja opcional, se não for usado
+
 
 jobs: 
     versioning-control:
