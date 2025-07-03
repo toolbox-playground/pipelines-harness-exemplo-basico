@@ -13,7 +13,11 @@ on:
         name: # Define o input "name"
           description: 'Trigger manual do Workflow' # Descrição do input
           required: false # Adicionado para que o input 'name' seja opcional, se não for usado
-
+permissions:
+  contents: write # Permite que o GITHUB_TOKEN escreva no repositório (para criar tags e fazer push)
+  pull-requests: write # Se você planeja criar PRs automaticamente (opcional, remova se não for usar)
+  # Se você estiver usando o 'npm run release' que interage com releases do GitHub, 'contents: write' geralmente já cobre.
+# -----------------------------------------------------------------
 
 jobs: 
     versioning-control:
@@ -23,7 +27,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v3
               with:
-                token: ${{ secrets.ACTIONS_TOKEN }}
+                token: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Install and Build
               run: |
