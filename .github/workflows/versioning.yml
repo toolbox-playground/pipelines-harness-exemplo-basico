@@ -32,21 +32,21 @@ jobs:
                 git config --global user.email "pipelines@toolboxdevops.cloud"
                 git config --global user.name "Toolbox Automation"
 
-           - name: Check commit message for specific keywords
-              run: |
-                text=$(git log -1 --no-merges --pretty=%B)
-                echo $text
-                if [[ $text =~ (fix|patch) ]]; then
-                  npm run release -- --release-as patch # <<< ESTA LINHA E SIMILARES CAUSAM O ERRO
-                  echo "{{ Patching Versioning }}"
-                elif [[ $text =~ (BREAKING\ CHANGE) ]]; then
-                  npm run release -- --release-as major # <<< ESTA LINHA E SIMILARES CAUSAM O ERRO
-                  echo "{{ Major Versioning }}"
-                elif [[ $text =~ (feat) ]]; then
-                  echo "{{ Minor Versioning }}"
-                  npm run release -- --release-as minor # <<< ESTA LINHA E SIMILARES CAUSAM O ERRO
-                else
-                  npm run release -- --release-as patch # <<< ESTA LINHA E SIMILARES CAUSAM O ERRO
-                  echo {{ Default Patching Versioning }}
-                fi
-                git push --follow-tags origin main
+          - name: Run Semantic Release 
+            run: |
+          # O semantic-release vai analisar os commits e determinar se deve criar uma nova versão.
+          # Não é necessário usar 'if/elif/else' ou `--release-as` aqui.
+          echo "::notice::Executando semantic-release para determinar a versão..."
+          npm run release # <<< CHAME APENAS ISSO!
+        env:
+          # O semantic-release precisa deste token para interagir com o GitHub
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Esta etapa 'git push' é geralmente desnecessária.
+      # O plugin '@semantic-release/github' (comum no semantic-release)
+      # já cuida do push das tags e da criação da release no GitHub.
+      # Se as tags não estiverem sendo empurradas após a execução do semantic-release,
+      # você pode reconsiderar esta etapa ou ajustar a configuração do semantic-release.
+      # - name: Push Final Git Changes (If necessary)
+      #   run: |
+      #     git push --follow-tags origin main
