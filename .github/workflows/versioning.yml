@@ -1,60 +1,52 @@
 name: Versioning Control
 
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'CHANGELOG.md'
-      - 'package.json'
-      - 'package-lock.json'
-  workflow_dispatch: # Evento que aciona o fluxo de trabalho manualmente
-    inputs: # Define os inputs do fluxo de trabalho
-      name: # Define o input "name"
-        description: 'Trigger manual do Workflow' # Descrição do input
-        required: false # Adicionado para que o input 'name' seja opcional, se não for usado
+on: 
+    push:
+      branches:
+        - main
+      paths-ignore:
+        - 'CHANGELOG.md'
+        - 'package.json'
+        - 'package-lock.json'
+    workflow_dispatch: # Evento que aciona o fluxo de trabalho manualmente
+      inputs: # Define os inputs do fluxo de trabalho
+        name: # Define o input "name"
+          description: 'Trigger manual do Workflow' # Descrição do input
 
-permissions:
-  contents: write # Essencial para o semantic-release criar tags e releases
-  pull-requests: write # Opcional, remova se não for usar
+jobs: 
+    versioning-control:
+        runs-on: ubuntu-latest
 
-jobs:
-  versioning-control:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Usa o token padrão do GitHub Actions
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install Node.js Dependencies
-        run: |
-          npm install
+            - name: Install and Build
+              run: |
+                npm install
 
-      - name: Configure Git User
-        run: |
-          git config --global user.email "pipelines@toolboxdevops.cloud"
-          git config --global user.name "Toolbox Automation"
+            - name: Configuring Git Account
+              run: |
+                git config --global user.email "pipelines@toolboxdevops.cloud"
+                git config --global user.name "Toolbox Automation"
 
-      - name: Run Semantic Release
-        # Esta etapa executa o semantic-release.
-        # Ele vai analisar os commits e determinar automaticamente se deve criar uma nova versão
-        # (patch, minor, ou major) e, em caso afirmativo, criar a tag, a release no GitHub
-        # e fazer o push das tags.
-        run: |
-          echo "::notice::Running semantic-release to determine new version..."
-          npm run release
-        env:
-          # O semantic-release precisa do GITHUB_TOKEN para interagir com a API do GitHub.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # A etapa 'git push --follow-tags origin main' é geralmente redundante
-      # se você está usando o plugin @semantic-release/github, pois ele já faz o push das tags.
-      # Se você notar que as tags não estão sendo empurradas, pode descomentar e ajustar esta etapa.
-      # - name: Push Git Tags (Optional, if semantic-release doesn't push them)
-      #   run: |
-      #     git push --follow-tags origin main
-      #   # Adicione uma condição para rodar só se houve uma nova versão
-      #   # if: success() && steps.run-semantic-release.outputs.new_release_published == 'true'
-      #   # Note: Para usar 'outputs', você precisaria de uma ação como 'semantic-release-action'
-      #   # ou configurar o semantic-release para expor essa informação.
+            - name: Check commit message for specific keywords
+              run: |
+                text=$(git log -1 --no-merges --pretty=%B)
+                echo $text
+                if [[ $text =~ (fix|patch) ]]; then
+                  npm run release -- --release-as patch
+                  echo "{{ Patching Versioning }}"
+                elif [[ $text =~ (BREAKING\ CHANGE) ]]; then
+                  npm run release -- --release-as major
+                  echo "{{ Major Versioning }}"
+                elif [[ $text =~ (feat) ]]; then
+                  echo "{{ Minor Versioning }}"
+                  npm run release -- --release-as minor
+                else
+                  npm run release -- --release-as patch
+                  echo {{ Default Patching Versioning }}
+                fi
+                git push --follow-tags origin main
